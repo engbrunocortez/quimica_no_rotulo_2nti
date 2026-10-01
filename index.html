@@ -1,0 +1,808 @@
+<title>Química no Rótulo</title>
+<meta name="description" content="Trilha auto-instrucional de Química: triacilgliceróis, gordura trans, carboidratos e leitura de rótulos (Canto, Moderna Plus, Cap. 22).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: barra lateral fixa com as estações + coluna de leitura; no celular a barra vira faixa rolável no topo */
+:root{
+  --bg:#f6f7f2; --surface:#ffffff; --ink:#1f2419; --muted:#5d6553; --line:#d9dccf;
+  --olive:#4f6122; --olive-soft:#e6ead6; --butter:#f2c94c; --butter-soft:#fbf1cf;
+  --ok:#2e7d4f; --ok-soft:#e1f1e7; --bad:#b3412e; --bad-soft:#f8e3de;
+  --label-ink:#111; --label-bg:#fff;
+  --f-display:"Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-body:"Literata", Georgia, "Times New Roman", serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#151912; --surface:#1d2318; --ink:#e7eadf; --muted:#a5ad98; --line:#343c2c;
+  --olive:#b5c97a; --olive-soft:#28321c; --butter:#f2c94c; --butter-soft:#3a3218;
+  --ok:#6fcf97; --ok-soft:#1d3326; --bad:#f08c78; --bad-soft:#3b201b;
+  --label-ink:#f2f2f2; --label-bg:#101410; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#151912; --surface:#1d2318; --ink:#e7eadf; --muted:#a5ad98; --line:#343c2c;
+  --olive:#b5c97a; --olive-soft:#28321c; --butter:#f2c94c; --butter-soft:#3a3218;
+  --ok:#6fcf97; --ok-soft:#1d3326; --bad:#f08c78; --bad-soft:#3b201b;
+  --label-ink:#f2f2f2; --label-bg:#101410; color-scheme:dark;}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0}
+.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}
+aside{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;overflow:auto;border-right:1px solid var(--line);padding:24px 16px;background:var(--surface)}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.1;margin:0 0 4px}
+.brand small{display:block;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.meta{font-size:.82rem;color:var(--muted);margin:0 0 18px}
+nav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+nav button{all:unset;cursor:pointer;display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;width:100%;padding:8px 10px;border-radius:8px;font-family:var(--f-display);font-size:.95rem;line-height:1.25;color:var(--ink);box-sizing:border-box}
+nav button:hover{background:var(--olive-soft)}
+nav button:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+nav button[aria-current="true"]{background:var(--olive);color:var(--bg)}
+nav .n{font-family:var(--f-mono);font-size:.8rem;padding-top:2px}
+nav .t small{display:block;font-family:var(--f-mono);font-size:.72rem;opacity:.75}
+nav .seen .n::after{content:" ✓"}
+.timer{margin-top:18px;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--olive);width:0;transition:width .3s}
+
+main{padding-inline:clamp(16px,4vw,56px);padding-block:32px 80px;min-width:0}
+.page{max-width:760px;margin:0 auto}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--olive);display:flex;flex-wrap:wrap;gap:6px 14px}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance}
+h1{font-size:clamp(1.9rem,4.5vw,2.7rem);margin:.3em 0 .4em}
+h2{font-size:1.45rem;margin:1.8em 0 .5em}
+h3{font-size:1.1rem;margin:1.4em 0 .4em}
+p{margin:.6em 0}
+.lead{font-size:1.1rem;color:var(--muted)}
+code,.mono{font-family:var(--f-mono);font-size:.9em}
+sub{font-size:.7em}
+
+.box{border-radius:10px;padding:16px 18px;margin:18px 0}
+.box h3{margin-top:0;display:flex;align-items:center;gap:8px}
+.read{background:var(--olive-soft)}
+.read .pg{font-family:var(--f-mono);font-size:.85rem;background:var(--olive);color:var(--bg);padding:2px 8px;border-radius:4px}
+.note{border:1px dashed var(--line)}
+.caderno{background:var(--butter-soft);border:2px solid var(--butter);position:relative}
+.caderno h3::before{content:"";width:18px;height:22px;border:2px solid currentColor;border-radius:2px;background:repeating-linear-gradient(transparent 0 4px,currentColor 4px 5px);opacity:.8;flex:none}
+.caderno ol{padding-left:1.4em;margin:.4em 0}
+.caderno li{margin:.5em 0}
+.caderno .tag{font-family:var(--f-mono);font-size:.75rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+ul.tight{padding-left:1.2em}ul.tight li{margin:.25em 0}
+
+.formula{font-family:var(--f-mono);font-size:.92rem;line-height:1.45;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;overflow-x:auto;white-space:pre}
+.hl{color:var(--olive);font-weight:600}
+.hl2{background:var(--butter);color:#1f2419;padding:0 2px;border-radius:2px}
+.figure{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;margin:16px 0}
+.figure svg{display:block;width:100%;height:auto}
+.cap{font-size:.85rem;color:var(--muted);margin-top:8px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.btn{font-family:var(--f-display);font-size:.95rem;font-weight:600;border:1.5px solid var(--olive);background:transparent;color:var(--olive);padding:7px 14px;border-radius:999px;cursor:pointer}
+.btn:hover{background:var(--olive-soft)}
+.btn[aria-pressed="true"],.btn.primary{background:var(--olive);color:var(--bg)}
+.btn:focus-visible{outline:2px solid var(--butter);outline-offset:2px}
+select,input[type=number]{font-family:var(--f-mono);font-size:.95rem;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+input[type=number]{width:6.5em}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted);font-family:var(--f-display)}
+
+/* quiz */
+.quiz{border-top:3px solid var(--olive);background:var(--surface);border-radius:0 0 10px 10px;padding:16px 18px;margin:22px 0}
+.quiz .qh{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--olive)}
+.quiz .qt{font-weight:600;margin:.3em 0 .6em}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{all:unset;cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-family:var(--f-body);font-size:.97rem;line-height:1.4;box-sizing:border-box}
+.opt:hover{border-color:var(--olive)}
+.opt:focus-visible{outline:2px solid var(--olive)}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.fb{margin-top:10px;font-size:.95rem;padding:10px 12px;border-radius:8px}
+.fb.right{background:var(--ok-soft)}.fb.wrong{background:var(--bad-soft)}
+.fb b{font-family:var(--f-display)}
+
+/* pager */
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:40px;border-top:1px solid var(--line);padding-top:18px;flex-wrap:wrap}
+
+/* tabela nutricional */
+.labels{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:16px 0}
+.prod{min-width:0}
+.prod h4{font-family:var(--f-display);margin:0 0 8px;font-size:1rem}
+.lupa{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;margin-bottom:8px;min-height:44px}
+.lupa span{font-family:Arial,Helvetica,sans-serif;font-weight:900;font-size:.72rem;line-height:1.1;background:var(--label-ink);color:var(--label-bg);padding:5px 7px;border-radius:3px;text-transform:uppercase}
+.lupa .none{background:transparent;color:var(--muted);font-weight:400;font-style:italic;padding:5px 0;text-transform:none}
+table.nut{width:100%;border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;font-size:.8rem;color:var(--label-ink);background:var(--label-bg);border:2px solid var(--label-ink)}
+table.nut caption{caption-side:top;text-align:left;font-weight:900;font-family:Arial,Helvetica,sans-serif;font-size:.95rem;border:2px solid var(--label-ink);border-bottom:0;padding:6px 8px;background:var(--label-bg);color:var(--label-ink)}
+table.nut th,table.nut td{border-top:1px solid var(--label-ink);padding:3px 6px;text-align:right;font-variant-numeric:tabular-nums}
+table.nut th:first-child,table.nut td:first-child{text-align:left}
+table.nut thead th{border-bottom:3px solid var(--label-ink);font-size:.72rem}
+table.nut .ind td:first-child{padding-left:16px}
+table.nut .tiny td{font-size:.68rem;border-top:3px solid var(--label-ink);text-align:left}
+.tablewrap{overflow-x:auto}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;align-items:end}
+.out{font-family:var(--f-mono);background:var(--olive-soft);border-radius:8px;padding:10px 12px;margin-top:10px;font-size:.92rem}
+
+/* classificador */
+.sorter{display:flex;flex-direction:column;gap:8px}
+.srow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:8px}
+.srow .seg{display:flex;gap:4px;flex-wrap:wrap}
+.srow .seg button{font-size:.82rem;padding:4px 10px}
+.srow .r{grid-column:1/-1;font-size:.88rem}
+.srow .r.right{color:var(--ok)}.srow .r.wrong{color:var(--bad)}
+
+.fischer{display:flex;gap:28px;flex-wrap:wrap;justify-content:center}
+.fischer .col{font-family:var(--f-mono);font-size:.95rem;text-align:center;line-height:1.7}
+.fischer .col b{display:block;font-family:var(--f-display);margin-bottom:4px}
+.fischer .carbonyl{background:var(--butter);color:#1f2419;border-radius:3px;padding:0 3px}
+.fischer .oh{color:var(--olive);font-weight:600}
+
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:14px 0}
+.timeline div{border-left:3px solid var(--olive);padding:4px 10px;font-size:.88rem}
+.timeline b{font-family:var(--f-display);display:block}
+.rubric{width:100%;border-collapse:collapse;font-size:.9rem;min-width:520px}
+.rubric th,.rubric td{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+.rubric th{font-family:var(--f-display)}
+.check li{list-style:none;margin:.35em 0}
+.check{padding-left:0}
+.check input{margin-right:8px;accent-color:var(--olive)}
+
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  aside{position:sticky;top:env(safe-area-inset-top,0px);height:auto;z-index:5;border-right:0;border-bottom:1px solid var(--line);padding:10px 16px}
+  .meta,.timer p{display:none}
+  .brand{font-size:1rem}.brand small{display:none}
+  nav ol{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px}
+  nav button{grid-template-columns:auto;white-space:nowrap;padding:6px 10px;font-size:.85rem}
+  nav .t small{display:none}
+  .timer{margin-top:6px;padding-top:6px}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+<aside>
+  <p class="brand"><small>Química · 2ª série</small>Química no Rótulo</p>
+  <p class="meta">Lipídios, gordura trans e carboidratos nos alimentos.<br>Livro: Canto, <i>Moderna Plus</i>, Cap. 22.</p>
+  <nav aria-label="Estações da trilha"><ol id="nav"></ol></nav>
+  <div class="timer">
+    <span id="progTxt">Estação 1 de 7</span>
+    <div class="bar"><i id="progBar"></i></div>
+    <p>Você pode abrir qualquer estação a qualquer momento. Nada é salvo neste aparelho: o seu registro é o caderno.</p>
+  </div>
+</aside>
+<main><div class="page" id="page"></div></main>
+</div>
+
+<!-- ============ CONTEÚDO DAS ESTAÇÕES ============ -->
+<template id="s0">
+  <div class="eyebrow"><span>Início</span><span>≈ 5 min</span></div>
+  <h1>O que a Química tem a dizer sobre o que você come?</h1>
+  <p class="lead">Nesta aula você vai entender, molécula por molécula, o que está escrito na tabela nutricional de um alimento: gorduras saturadas e insaturadas, gordura trans e carboidratos.</p>
+
+  <h2>Como funciona a trilha</h2>
+  <ul class="tight">
+    <li>São <b>5 estações de estudo</b> e um <b>fechamento</b>. Siga na ordem; se precisar, volte ou pule pela barra de estações.</li>
+    <li>Em cada estação há três tipos de bloco:</li>
+  </ul>
+  <div class="box read"><h3>Leia no livro <span class="pg">p. 000</span></h3><p>Indica as páginas exatas do livro-texto e o que observar nelas.</p></div>
+  <div class="quiz"><div class="qh">Confira · questão formativa</div><p style="margin:.3em 0 0">Questões de múltipla escolha com correção imediata. <b>Não valem nota.</b> Servem para você checar se entendeu antes de seguir. Errou? Leia o comentário e tente de novo.</p></div>
+  <div class="box caderno"><h3>No caderno</h3><p>Tarefas <b>avaliativas</b>. Tudo o que estiver nesses blocos deve ser feito no caderno, à mão, com o número da tarefa (C1, C2…). É isso que você vai fotografar e enviar no Teams.</p></div>
+
+  <h2>Tempo sugerido (2 horas)</h2>
+  <div class="timeline">
+    <div><b>Estação 1</b>Ácidos graxos · 20 min</div>
+    <div><b>Estação 2</b>Triacilgliceróis · 20 min</div>
+    <div><b>Estação 3</b>Gordura trans · 15 min</div>
+    <div><b>Estação 4</b>Carboidratos · 25 min</div>
+    <div><b>Estação 5</b>Lendo rótulos · 20 min</div>
+    <div><b>Fechamento</b>Síntese e envio · 15 min</div>
+  </div>
+
+  <h2>Antes de começar</h2>
+  <ul class="check">
+    <li><label><input type="checkbox" id="pre1">Livro <i>Química na abordagem do cotidiano</i> (Moderna Plus) aberto no Capítulo 22, p. 384.</label></li>
+    <li><label><input type="checkbox" id="pre2">Caderno aberto em página nova. No topo: <b>nome completo, nº, turma, data e “Química no Rótulo”</b>.</label></li>
+    <li><label><input type="checkbox" id="pre3">Caneta, lápis e calculadora (a do celular serve).</label></li>
+    <li><label><input type="checkbox" id="pre4">Se possível, a embalagem de um alimento industrializado que você tem em casa (vai usar na Estação 5).</label></li>
+  </ul>
+
+  <div class="box note">
+    <h3>O que esta aula desenvolve</h3>
+    <p style="font-size:.93rem"><b>Competência 3</b> · <b>EM13CNT303</b>: interpretar textos de divulgação científica sobre temas das Ciências da Natureza, considerando a apresentação dos dados em equações, gráficos e tabelas, a consistência dos argumentos e a coerência das conclusões, para selecionar fontes confiáveis de informação.</p>
+    <p style="font-size:.93rem">Na prática: ler fórmulas, equações e uma tabela nutricional e tirar conclusões bem argumentadas a partir delas.</p>
+  </div>
+</template>
+
+<template id="s1">
+  <div class="eyebrow"><span>Estação 1</span><span>≈ 20 min</span><span>Livro p. 384</span></div>
+  <h1>Ácidos graxos: retos ou dobrados</h1>
+  <p class="lead">Por que a manteiga é sólida e o óleo de soja é líquido, se os dois são “gordura”? A resposta está no formato das moléculas.</p>
+
+  <div class="box read"><h3>Leia no livro <span class="pg">p. 384</span></h3>
+    <p>Item 1, <b>“Triacilgliceróis” → “Glicerol e ácidos graxos”</b>. Observe:</p>
+    <ul class="tight">
+      <li>a fórmula do <b>glicerol</b> e por que ele é chamado de triálcool;</li>
+      <li>a lista de ácidos graxos (mirístico, palmítico, esteárico, palmitoleico, oleico, linoleico) e o número de carbonos de cada um;</li>
+      <li>as <b>Figuras 1 e 2</b>: moléculas lineares × moléculas recurvadas.</li>
+    </ul>
+  </div>
+
+  <h2>Três famílias de ácidos graxos</h2>
+  <p>Ácido graxo é um <b>ácido carboxílico de cadeia longa</b> (geralmente 12 carbonos ou mais), com o grupo <code>–COOH</code> numa ponta. O que muda de um para outro é a presença de ligações duplas C=C:</p>
+  <ul class="tight">
+    <li><b>Saturado</b>: só ligações simples entre carbonos. Ex.: esteárico, <code>H<sub>3</sub>C[CH<sub>2</sub>]<sub>16</sub>COOH</code>.</li>
+    <li><b>Monoinsaturado</b>: uma ligação dupla C=C. Ex.: oleico.</li>
+    <li><b>Poli-insaturado</b>: duas ou mais C=C. Ex.: linoleico.</li>
+  </ul>
+
+  <div class="figure">
+    <div class="controls" role="group" aria-label="Escolha o ácido graxo">
+      <button class="btn" data-fa="est" aria-pressed="true">Esteárico (saturado)</button>
+      <button class="btn" data-fa="ole" aria-pressed="false">Oleico (1 C=C)</button>
+      <button class="btn" data-fa="lin" aria-pressed="false">Linoleico (2 C=C)</button>
+    </div>
+    <svg id="faSvg" viewBox="0 0 640 360" role="img" aria-label="Esquema das moléculas de ácido graxo e do seu empacotamento"></svg>
+    <p class="cap" id="faCap"></p>
+  </div>
+  <p>Repare no empacotamento: moléculas <b>retas</b> se encaixam lado a lado, como lápis numa caixa. Essa organização favorece o sólido e eleva a temperatura de fusão. Moléculas <b>dobradas</b> pela ligação dupla não se encaixam bem; o material continua líquido a 25 °C.</p>
+
+  <div class="quiz" data-q="q1a"></div>
+  <div class="quiz" data-q="q1b"></div>
+
+  <div class="box caderno"><h3>No caderno · C1</h3>
+    <ol>
+      <li><span class="tag">C1.a</span> Escreva com suas palavras o que é um ácido graxo e como se classificam (saturado, monoinsaturado, poli-insaturado). Dê um exemplo de cada um, copiando a fórmula do livro (p. 384).</li>
+      <li><span class="tag">C1.b</span> Desenhe um esquema simples, como o da Figura 2, comparando o empacotamento das moléculas do ácido esteárico e do ácido oleico. Abaixo do desenho, explique em 3 a 5 linhas por que o esteárico é sólido e o oleico é líquido a 25 °C.</li>
+    </ol>
+  </div>
+</template>
+
+<template id="s2">
+  <div class="eyebrow"><span>Estação 2</span><span>≈ 20 min</span><span>Livro p. 385–386</span></div>
+  <h1>Triacilgliceróis: um glicerol, três caudas</h1>
+  <p class="lead">Óleos e gorduras não são ácidos graxos soltos. Eles são <b>ésteres</b>: o glicerol “segura” três ácidos graxos.</p>
+
+  <div class="box read"><h3>Leia no livro <span class="pg">p. 385–386</span></h3>
+    <ul class="tight">
+      <li>“Estrutura dos triacilgliceróis”: a estrutura geral e a equação de esterificação.</li>
+      <li>O parágrafo sobre gorduras (sólidas) × óleos (líquidos) e as Figuras 3, 4 e 5 (azeite, girassol, abacate).</li>
+      <li>Início da p. 386: energia fornecida por lipídios (<b>9 kcal/g</b>) × carboidratos e proteínas (<b>4 kcal/g</b>).</li>
+    </ul>
+  </div>
+
+  <h2>A reação de formação</h2>
+  <p>Cada um dos três grupos <code>–OH</code> do glicerol reage com o <code>–COOH</code> de um ácido graxo. Em cada ligação formada sai uma molécula de água. O grupo que surge, <code class="hl">–COO–</code>, é o grupo <b>éster</b>.</p>
+<div class="formula">H<sub>2</sub>C–OH     HO–<span class="hl">CO</span>–R<sub>1</sub>          H<sub>2</sub>C–<span class="hl">O–CO</span>–R<sub>1</sub>
+ |                                |
+ HC–OH  +  HO–<span class="hl">CO</span>–R<sub>2</sub>    →     HC–<span class="hl">O–CO</span>–R<sub>2</sub>   +  3 H<sub>2</sub>O
+ |                                |
+H<sub>2</sub>C–OH     HO–<span class="hl">CO</span>–R<sub>3</sub>          H<sub>2</sub>C–<span class="hl">O–CO</span>–R<sub>3</sub>
+
+glicerol   3 ácidos graxos        triacilglicerol      água
+(triálcool)                        (triéster)</div>
+
+  <h2>Monte um triacilglicerol</h2>
+  <p>Escolha os três ácidos graxos que vão se ligar ao glicerol e veja a tendência do material resultante.</p>
+  <div class="figure">
+    <div class="calc">
+      <label class="f" for="r1">R<sub>1</sub><select id="r1"></select></label>
+      <label class="f" for="r2">R<sub>2</sub><select id="r2"></select></label>
+      <label class="f" for="r3">R<sub>3</sub><select id="r3"></select></label>
+    </div>
+    <svg id="tagSvg" viewBox="0 0 640 260" role="img" aria-label="Triacilglicerol montado"></svg>
+    <div class="out" id="tagOut"></div>
+  </div>
+
+  <h2>Dá para saber pela fórmula?</h2>
+  <p>Sim. Num ácido graxo escrito como <code>C<sub>n</sub>H<sub>m</sub>COOH</code>, a cadeia é <b>saturada</b> quando <code>m = 2n + 1</code>. Cada ligação dupla C=C “tira” 2 hidrogênios. Experimente com o ácido palmítico, <code>C<sub>15</sub>H<sub>31</sub>COOH</code>:</p>
+  <div class="figure">
+    <div class="calc">
+      <label class="f" for="cn">carbonos na cadeia (n)<input type="number" id="cn" value="15" min="1" max="30"></label>
+      <label class="f" for="hm">hidrogênios na cadeia (m)<input type="number" id="hm" value="31" min="1" max="61"></label>
+    </div>
+    <div class="out" id="cOut"></div>
+  </div>
+
+  <div class="quiz" data-q="q2a"></div>
+  <div class="quiz" data-q="q2b"></div>
+
+  <div class="box caderno"><h3>No caderno · C2</h3>
+    <p style="margin-top:0">Resolva as atividades do <b>“Aplicando conhecimentos”</b> da p. 387, copiando o enunciado resumido:</p>
+    <ol>
+      <li><span class="tag">C2.a</span> Atividade <b>1</b>: fórmula estrutural genérica de um triacilglicerol (use R<sub>1</sub>, R<sub>2</sub>, R<sub>3</sub>).</li>
+      <li><span class="tag">C2.b</span> Atividade <b>2</b>: classe funcional dessas substâncias. Circule na sua fórmula os três grupos funcionais.</li>
+      <li><span class="tag">C2.c</span> Atividade <b>5</b>: classifique os ácidos behênico, erúcico e gondoico. <b>Mostre a conta</b> (compare m com 2n + 1) para cada um.</li>
+      <li><span class="tag">C2.d</span> Explique por que o rótulo informa a energia de um alimento rico em gordura como bem maior que a de um alimento rico em açúcar de mesma massa. Use os valores em kcal/g do livro.</li>
+    </ol>
+  </div>
+</template>
+
+<template id="s3">
+  <div class="eyebrow"><span>Estação 3</span><span>≈ 15 min</span><span>Livro p. 386</span></div>
+  <h1>Gordura trans: um efeito colateral da indústria</h1>
+  <p class="lead">Para transformar óleo líquido em margarina pastosa, a indústria adiciona hidrogênio às ligações duplas. No meio do caminho, algumas moléculas mudam de formato.</p>
+
+  <div class="box read"><h3>Leia no livro <span class="pg">p. 386</span></h3>
+    <p>Quadro <b>“Em destaque – Saúde: Gordura trans”</b> e Figura 6. Procure responder enquanto lê:</p>
+    <ul class="tight">
+      <li>O que é <b>hidrogenação catalítica</b>?</li>
+      <li>Por que hoje a hidrogenação é apenas <b>parcial</b>?</li>
+      <li>O que acontece com parte dos ácidos graxos <b>cis</b> durante o processo?</li>
+    </ul>
+  </div>
+
+  <h2>Hidrogenação: dupla vira simples</h2>
+<div class="formula">  –CH<span class="hl">=</span>CH–   +   H<sub>2</sub>   <span class="hl">—catalisador→</span>   –CH<sub>2</sub>–CH<sub>2</sub>–
+ (insaturada)                         (saturada)
+   óleo, líquido                       gordura, sólida</div>
+
+  <h2>Cis × trans: a mesma fórmula, outro formato</h2>
+  <p>Na ligação dupla, os dois pedaços da cadeia podem ficar do <b>mesmo lado</b> (cis, a forma natural) ou em <b>lados opostos</b> (trans). A molécula trans fica quase reta, como uma saturada, e se comporta de modo parecido no organismo.</p>
+  <div class="figure">
+    <div class="controls" role="group" aria-label="Configuração da ligação dupla">
+      <button class="btn" data-ct="cis" aria-pressed="true">cis (natural)</button>
+      <button class="btn" data-ct="trans" aria-pressed="false">trans (formada na indústria)</button>
+    </div>
+    <svg id="ctSvg" viewBox="0 0 640 250" role="img" aria-label="Ligação dupla cis ou trans"></svg>
+    <p class="cap" id="ctCap"></p>
+  </div>
+
+  <div class="box note">
+    <h3>Atualização: o que mudou no Brasil</h3>
+    <p style="font-size:.95rem">O livro mostra que a gordura trans deve ser informada no rótulo. Depois disso, a Anvisa foi além: pela <b>RDC nº 332/2019</b>, desde 2023 é proibido usar <b>óleos e gorduras parcialmente hidrogenados</b> em alimentos no Brasil, que eram a principal fonte de gordura trans industrial. Por isso a maioria dos rótulos hoje mostra “0 g” de gorduras trans.</p>
+  </div>
+
+  <div class="quiz" data-q="q3a"></div>
+  <div class="quiz" data-q="q3b"></div>
+
+  <div class="box caderno"><h3>No caderno · C3</h3>
+    <ol>
+      <li><span class="tag">C3.a</span> Represente a hidrogenação de uma ligação dupla C=C (como no esquema acima) e indique o reagente, o catalisador e o que muda no estado físico do material.</li>
+      <li><span class="tag">C3.b</span> Desenhe um trecho de cadeia na configuração <b>cis</b> e outro na <b>trans</b>, indicando a diferença.</li>
+      <li><span class="tag">C3.c</span> Em 5 a 8 linhas: por que a gordura trans passou a ser informada nos rótulos e, depois, restringida? Use pelo menos uma informação do livro e uma desta estação.</li>
+    </ol>
+  </div>
+</template>
+
+<template id="s4">
+  <div class="eyebrow"><span>Estação 4</span><span>≈ 25 min</span><span>Livro p. 395–396</span></div>
+  <h1>Carboidratos: do açúcar ao amido</h1>
+  <p class="lead">Glicose, sacarose, amido e celulose pertencem à mesma família. A diferença está em quantas unidades de açúcar estão ligadas entre si.</p>
+
+  <div class="box read"><h3>Leia no livro <span class="pg">p. 395–396</span></h3>
+    <ul class="tight">
+      <li>Item 4, <b>“Carboidratos”</b>: monossacarídios e dissacarídios (glicose, frutose, sacarose, lactose, maltose).</li>
+      <li>“Polissacarídios”: amido, glicogênio e celulose; Figuras 11 e 12.</li>
+      <li>Opcional, se sobrar tempo: “A produção de etanol por fermentação” (p. 396).</li>
+    </ul>
+  </div>
+
+  <h2>Monossacarídios: aldose ou cetose</h2>
+  <p>Glicose e frutose têm a mesma fórmula molecular, <code>C<sub>6</sub>H<sub>12</sub>O<sub>6</sub></code>, e vários grupos <code class="hl">–OH</code> (são <b>poliálcoois</b>). A diferença está no grupo carbonila <span class="hl2 mono">C=O</span>:</p>
+  <div class="figure">
+    <div class="fischer">
+      <div class="col"><b>Glicose · aldose</b>
+        <span class="carbonyl">H–C=O</span> <small>(aldeído)</small><br>
+        H–C–<span class="oh">OH</span><br>
+        <span class="oh">HO</span>–C–H<br>
+        H–C–<span class="oh">OH</span><br>
+        H–C–<span class="oh">OH</span><br>
+        CH<sub>2</sub><span class="oh">OH</span>
+      </div>
+      <div class="col"><b>Frutose · cetose</b>
+        CH<sub>2</sub><span class="oh">OH</span><br>
+        <span class="carbonyl">C=O</span> <small>(cetona)</small><br>
+        <span class="oh">HO</span>–C–H<br>
+        H–C–<span class="oh">OH</span><br>
+        H–C–<span class="oh">OH</span><br>
+        CH<sub>2</sub><span class="oh">OH</span>
+      </div>
+    </div>
+    <p class="cap">Cadeias abertas, representadas na vertical. Na natureza, essas moléculas aparecem principalmente na forma cíclica (livro, p. 395).</p>
+  </div>
+
+  <h2>Juntando unidades</h2>
+<div class="formula">Dissacarídio:   C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>  →  C<sub>12</sub>H<sub>22</sub>O<sub>11</sub> + H<sub>2</sub>O
+                  glicose    frutose         sacarose
+
+Polissacarídio:  n C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>  →  (C<sub>6</sub>H<sub>10</sub>O<sub>5</sub>)<sub>n</sub> + n H<sub>2</sub>O
+                  glicose        amido, glicogênio ou celulose</div>
+  <ul class="tight">
+    <li><b>Amido</b>: reserva de energia das plantas (trigo, arroz, batata). Polímero da α-glicose.</li>
+    <li><b>Glicogênio</b>: reserva de energia de animais e fungos. Polímero da α-glicose.</li>
+    <li><b>Celulose</b>: estrutura da parede celular vegetal. Polímero da β-glicose. Não é digerida por nós; é a principal <b>fibra alimentar</b>.</li>
+  </ul>
+
+  <h2>Classifique</h2>
+  <p>Para cada carboidrato, escolha a categoria. A correção aparece na hora.</p>
+  <div class="figure"><div class="sorter" id="sorter"></div></div>
+
+  <div class="quiz" data-q="q4a"></div>
+  <div class="quiz" data-q="q4b"></div>
+
+  <div class="box caderno"><h3>No caderno · C4</h3>
+    <ol>
+      <li><span class="tag">C4.a</span> Monte uma tabela com três colunas (<b>monossacarídios | dissacarídios | polissacarídios</b>) e, para cada categoria, escreva: definição, dois exemplos e um alimento onde aparecem.</li>
+      <li><span class="tag">C4.b</span> Desenhe a glicose e a frutose em cadeia aberta. Circule e nomeie os grupos funcionais e escreva qual é aldose e qual é cetose.</li>
+      <li><span class="tag">C4.c</span> Escreva a equação de formação da sacarose e explique, com a ideia de monômero e polímero, a equação de formação do amido.</li>
+      <li><span class="tag">C4.d</span> A tabela nutricional mostra “fibra alimentar” separada dos carboidratos digeríveis. Qual polissacarídio é o principal responsável pelas fibras, e por que ele é importante na dieta (Figura 12)?</li>
+    </ol>
+  </div>
+</template>
+
+<template id="s5">
+  <div class="eyebrow"><span>Estação 5</span><span>≈ 20 min</span><span>Livro p. 397</span></div>
+  <h1>Lendo o rótulo como químico</h1>
+  <p class="lead">Agora junte tudo: cada linha da tabela nutricional é uma família de biomoléculas que você estudou.</p>
+
+  <div class="box read"><h3>Leia no livro <span class="pg">p. 397</span></h3>
+    <p>Atividades <b>25</b> (dietas) e <b>26</b> (torta com 500 kcal). Leia os enunciados agora; você vai resolver a 26 no caderno.</p>
+  </div>
+
+  <h2>Como ler a tabela</h2>
+  <ul class="tight">
+    <li>A tabela nutricional mostra valores por <b>100 g</b> (para comparar produtos) e por <b>porção</b> (o quanto se costuma comer).</li>
+    <li><b>%VD</b> é o percentual do valor diário de referência que a porção fornece, considerando uma dieta de 2 000 kcal.</li>
+    <li>A <b>lupa frontal</b> (“ALTO EM…”) aparece quando, em 100 g de alimento sólido, há 15 g ou mais de açúcares adicionados, 6 g ou mais de gordura saturada ou 600 mg ou mais de sódio.</li>
+  </ul>
+  <p style="font-size:.9rem;color:var(--muted)">Os dois rótulos abaixo são de produtos <b>fictícios</b>, criados para esta aula.</p>
+
+  <div class="labels" id="labels"></div>
+
+  <h2>Calculadora de energia</h2>
+  <p>Use os valores do livro: <b>4 kcal/g</b> para carboidratos e proteínas, <b>9 kcal/g</b> para gorduras. Teste com os números de 100 g de um dos rótulos e compare com o valor energético declarado.</p>
+  <div class="figure">
+    <div class="calc">
+      <label class="f" for="kc">carboidratos (g)<input type="number" id="kc" value="68" min="0" step="0.1"></label>
+      <label class="f" for="kp">proteínas (g)<input type="number" id="kp" value="6" min="0" step="0.1"></label>
+      <label class="f" for="kg">gorduras totais (g)<input type="number" id="kg" value="20" min="0" step="0.1"></label>
+    </div>
+    <div class="out" id="kOut"></div>
+  </div>
+
+  <div class="quiz" data-q="q5a"></div>
+  <div class="quiz" data-q="q5b"></div>
+  <div class="quiz" data-q="q5c"></div>
+
+  <div class="box caderno"><h3>No caderno · C5</h3>
+    <ol>
+      <li><span class="tag">C5.a</span> Resolva a atividade <b>26</b> da p. 397 com o cálculo completo: energia de uma fatia e número máximo de fatias.</li>
+      <li><span class="tag">C5.b</span> <b>Rótulo real.</b> Escolha um alimento industrializado da sua casa (ou do mercado). Anote: nome do produto, porção e a tabela nutricional completa por 100 g.</li>
+      <li><span class="tag">C5.c</span> Com os dados do seu rótulo, calcule a energia de 100 g usando 4, 4 e 9 kcal/g. Compare com o valor declarado e comente a diferença, se houver.</li>
+      <li><span class="tag">C5.d</span> Na lista de ingredientes, encontre: um ingrediente fonte de <b>lipídios</b> e um fonte de <b>carboidratos</b>. Diga a qual grupo de biomoléculas da aula cada um pertence. O produto tem lupa? Por quê?</li>
+      <li><span class="tag">C5.e</span> Uma propaganda diz: “Zero gordura trans, então é saudável!”. Usando os dados do seu rótulo, escreva um parágrafo concordando ou discordando, com argumentos químicos.</li>
+    </ol>
+  </div>
+</template>
+
+<template id="s6">
+  <div class="eyebrow"><span>Fechamento</span><span>≈ 15 min</span></div>
+  <h1>Síntese e envio</h1>
+  <p class="lead">Feche a aula organizando o que aprendeu e conferindo o caderno antes de fotografar.</p>
+
+  <div class="box caderno"><h3>No caderno · C6</h3>
+    <ol>
+      <li><span class="tag">C6.a</span> Faça um <b>mapa conceitual</b> com o centro “Biomoléculas nos alimentos”, ligando: lipídios → ácidos graxos (saturado, insaturado, trans) → triacilgliceróis (éster); carboidratos → mono, di, polissacarídios; e a energia (kcal/g) de cada grupo. Use setas com palavras de ligação.</li>
+      <li><span class="tag">C6.b</span> <b>Autoavaliação</b> (3 linhas): o que ficou claro, o que ainda gera dúvida, e em qual questão “Confira” você errou e o que entendeu depois.</li>
+    </ol>
+  </div>
+
+  <h2>Antes de fotografar, confira</h2>
+  <ul class="check">
+    <li><label><input type="checkbox" id="ck1">Cabeçalho com nome, nº, turma, data e “Química no Rótulo”.</label></li>
+    <li><label><input type="checkbox" id="ck2">C1 (a, b) · Ácidos graxos.</label></li>
+    <li><label><input type="checkbox" id="ck3">C2 (a, b, c, d) · Triacilgliceróis.</label></li>
+    <li><label><input type="checkbox" id="ck4">C3 (a, b, c) · Gordura trans.</label></li>
+    <li><label><input type="checkbox" id="ck5">C4 (a, b, c, d) · Carboidratos.</label></li>
+    <li><label><input type="checkbox" id="ck6">C5 (a, b, c, d, e) · Rótulos.</label></li>
+    <li><label><input type="checkbox" id="ck7">C6 (a, b) · Mapa conceitual e autoavaliação.</label></li>
+  </ul>
+  <p id="ckOut" class="mono" style="font-size:.9rem;color:var(--muted)"></p>
+
+  <h2>Como enviar no Teams</h2>
+  <ol>
+    <li>Fotografe cada página com boa luz, de cima, sem sombra, com a folha inteira aparecendo.</li>
+    <li>Confira se a letra está legível ao dar zoom na foto.</li>
+    <li>Abra a tarefa <b>“Química no Rótulo”</b> no Teams da turma.</li>
+    <li>Anexe as fotos <b>na ordem das páginas</b> e clique em <b>Entregar</b>.</li>
+  </ol>
+
+  <h2>Como o caderno será avaliado</h2>
+  <div class="tablewrap">
+  <table class="rubric">
+    <thead><tr><th>Critério</th><th>O que se espera</th></tr></thead>
+    <tbody>
+      <tr><td>Completude</td><td>Todas as tarefas C1 a C6 presentes, identificadas e na ordem.</td></tr>
+      <tr><td>Correção conceitual</td><td>Classificação correta de ácidos graxos, triacilgliceróis como ésteres, cis/trans, mono/di/polissacarídios.</td></tr>
+      <tr><td>Representação química</td><td>Fórmulas e equações escritas com clareza, grupos funcionais indicados.</td></tr>
+      <tr><td>Interpretação de dados</td><td>Leitura correta da tabela nutricional, cálculos de energia mostrados passo a passo.</td></tr>
+      <tr><td>Argumentação</td><td>Textos com conclusões coerentes, apoiadas em dados do livro e do rótulo (C3.c, C5.e).</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box note">
+    <h3>Para ir além (opcional)</h3>
+    <ul class="tight">
+      <li>Livro, p. 387, “Dialogando com o texto”: diacilgliceróis, monoacilgliceróis e colesterol são ésteres de ácidos graxos?</li>
+      <li>Vitaminas hidrossolúveis e lipossolúveis: quadro “Em destaque” indicado no sumário do livro (p. 180).</li>
+      <li>Videoaulas do Prof. Paulo Valim (Química em Ação): <a href="https://www.youtube.com/@paulovalim/search?query=lip%C3%ADdios" target="_blank" rel="noopener">lipídios</a> · <a href="https://www.youtube.com/@paulovalim/search?query=carboidratos" target="_blank" rel="noopener">carboidratos</a>.</li>
+      <li>Anvisa: <a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/rotulagem" target="_blank" rel="noopener">rotulagem de alimentos</a>.</li>
+    </ul>
+  </div>
+</template>
+
+<script>
+(function(){
+const STATIONS=[
+ {id:"s0",n:"0",t:"Início",s:"como funciona"},
+ {id:"s1",n:"1",t:"Ácidos graxos",s:"p. 384 · 20 min"},
+ {id:"s2",n:"2",t:"Triacilgliceróis",s:"p. 385–386 · 20 min"},
+ {id:"s3",n:"3",t:"Gordura trans",s:"p. 386 · 15 min"},
+ {id:"s4",n:"4",t:"Carboidratos",s:"p. 395–396 · 25 min"},
+ {id:"s5",n:"5",t:"Lendo rótulos",s:"p. 397 · 20 min"},
+ {id:"s6",n:"✦",t:"Síntese e envio",s:"15 min"}
+];
+const QUIZ={
+ q1a:{t:"O ácido palmitoleico tem fórmula H₃C[CH₂]₅CH=CH[CH₂]₇COOH. Como ele se classifica?",
+  o:["Saturado","Monoinsaturado","Poli-insaturado","Não é ácido graxo, pois tem só 16 carbonos"],c:1,
+  f:["Há uma ligação dupla CH=CH na cadeia; saturados têm apenas ligações simples.","Isso: uma única ligação dupla C=C na cadeia.","Poli-insaturado exige duas ou mais ligações C=C. Conte quantos “=” aparecem.","Ácidos graxos costumam ter 12 carbonos ou mais. 16 está dentro disso."]},
+ q1b:{t:"Por que os ácidos graxos saturados tendem a ser sólidos a 25 °C?",
+  o:["Porque têm mais ligações duplas, que são mais fortes","Porque suas moléculas lineares se empacotam de forma ordenada, favorecendo o cristal","Porque são mais leves que os insaturados","Porque não possuem o grupo –COOH"],c:1,
+  f:["Saturados não têm ligações duplas C=C. Releia a classificação.","Exato. A forma reta favorece um arranjo compacto (Figura 2), o que eleva a temperatura de fusão.","A massa não é o fator decisivo aqui: esteárico e oleico têm os dois 18 carbonos e estados físicos diferentes.","Todo ácido graxo tem –COOH; é isso que o torna um ácido carboxílico."]},
+ q2a:{t:"Qual grupo funcional liga o glicerol aos ácidos graxos num triacilglicerol?",
+  o:["Éter (–O–)","Éster (–COO–)","Ácido carboxílico (–COOH)","Álcool (–OH)"],c:1,
+  f:["Éter tem um oxigênio entre dois carbonos, sem C=O. Olhe de novo a equação.","Certo: a reação entre álcool e ácido carboxílico forma éster e água (esterificação).","O –COOH existia nos ácidos graxos antes da reação; ele é consumido.","Os –OH do glicerol são consumidos na reação."]},
+ q2b:{t:"O ácido linolênico tem fórmula C₁₇H₂₉COOH. Quantas ligações duplas C=C há na cadeia?",
+  o:["Nenhuma","1","2","3"],c:3,
+  f:["Se fosse saturado, teria 2·17+1 = 35 H. Tem 29.","Faltam 35 − 29 = 6 hidrogênios. Cada C=C retira 2.","Faltam 6 hidrogênios em relação ao saturado. Divida por 2.","Isso: 35 − 29 = 6 hidrogênios a menos, 6 ÷ 2 = 3 ligações duplas. É poli-insaturado."]},
+ q3a:{t:"O que acontece na hidrogenação catalítica de um óleo?",
+  o:["Adiciona-se H₂ às ligações duplas C=C, e o material fica mais sólido","Retira-se hidrogênio do óleo, formando mais ligações duplas","O óleo se transforma em glicerol e água","O óleo vira carboidrato"],c:0,
+  f:["Correto. Menos ligações duplas significa moléculas mais retas e material mais pastoso (margarina).","É o contrário: o H₂ é adicionado.","Isso descreveria uma quebra do éster (hidrólise), não a hidrogenação.","A hidrogenação não muda a família da molécula; ela continua sendo um lipídio."]},
+ q3b:{t:"Por que a gordura trans se parece com a gordura saturada?",
+  o:["Porque não tem nenhuma ligação dupla","Porque na configuração trans a cadeia fica quase reta e se empacota bem","Porque é natural e existe em todos os óleos","Porque tem mais oxigênio"],c:1,
+  f:["Ela ainda tem ligação dupla; o que muda é a posição dos grupos em torno dela.","Isso. Os pedaços da cadeia ficam em lados opostos e a molécula não dobra, como a saturada.","O livro diz que os ácidos graxos trans formados industrialmente não existem na natureza nessa origem.","A quantidade de oxigênio é a mesma do isômero cis."]},
+ q4a:{t:"A glicose é classificada como aldose porque apresenta:",
+  o:["Um grupo cetona e vários –OH","Um grupo aldeído e vários –OH","Um grupo éster","Seis átomos de carbono"],c:1,
+  f:["Cetona + poliálcool é a frutose, uma cetose.","Certo: aldeído + poliálcool = aldose.","Éster aparece nos triacilgliceróis, não nos monossacarídios.","A frutose também tem 6 carbonos e é cetose. O critério é o grupo carbonila."]},
+ q4b:{t:"Amido e celulose são polímeros da glicose. Qual afirmação está correta?",
+  o:["Os dois são digeridos pelo ser humano e fornecem 4 kcal/g","O amido é reserva das plantas; a celulose é estrutural e não é digerida por nós","A celulose é reserva de energia dos animais","O amido é um dissacarídio"],c:1,
+  f:["A celulose não é digerida pelo ser humano; ela atua como fibra.","Isso. Amido (α-glicose) é reserva; celulose (β-glicose) é estrutura e fibra alimentar.","Reserva dos animais é o glicogênio.","O amido é polissacarídio, formado por muitas unidades de glicose."]},
+ q5a:{t:"Na Torrada Integral Crocante (fictícia), qual nutriente fez aparecer a lupa “ALTO EM”?",
+  o:["Açúcar adicionado","Gordura saturada","Sódio","Fibra alimentar"],c:2,
+  f:["3 g de açúcares adicionados em 100 g, bem abaixo de 15 g.","1,5 g de saturada em 100 g, abaixo de 6 g.","Certo: 650 mg de sódio em 100 g, acima do limite de 600 mg. Ser “integral” não impede a lupa.","Fibra não gera lupa; ela é um nutriente que se busca na dieta."]},
+ q5b:{t:"Em 100 g do Biscoito Recheado (fictício), quantas kcal vêm das gorduras?",
+  o:["20 kcal","80 kcal","180 kcal","476 kcal"],c:2,
+  f:["Esse é o valor em gramas. Multiplique pelo fator de energia.","Esse seria o cálculo com 4 kcal/g. Gorduras fornecem 9.","Exato: 20 g × 9 kcal/g = 180 kcal, mais de um terço da energia total.","Esse é o valor energético total (inclui carboidratos e proteínas)."]},
+ q5c:{t:"Qual é a melhor forma de comparar dois produtos quanto à gordura saturada?",
+  o:["Comparar os valores por porção, porque são diferentes em cada marca","Comparar os valores por 100 g","Comparar só o %VD do valor energético","Olhar apenas se há lupa"],c:1,
+  f:["As porções podem ter tamanhos diferentes, o que distorce a comparação.","Isso: 100 g é a mesma base para os dois produtos.","O valor energético não diz quanto dessa energia vem da gordura saturada.","A lupa só indica que o limite foi ultrapassado; não permite comparar quantidades."]}
+};
+const FA={
+ est:{name:"Ácido esteárico",bends:[],cap:"Ácido esteárico (18 C, saturado): cadeia em zigue-zague reta. As moléculas se alinham e formam um sólido. Temperatura de fusão ≈ 69 °C."},
+ ole:{name:"Ácido oleico",bends:[9],cap:"Ácido oleico (18 C, uma C=C cis): a ligação dupla dobra a cadeia. As moléculas não se encaixam e o material é líquido a 25 °C (fusão ≈ 13 °C)."},
+ lin:{name:"Ácido linoleico",bends:[9,12],cap:"Ácido linoleico (18 C, duas C=C cis): ainda mais dobrado, empacota pior. Fusão ≈ −5 °C; abundante no óleo de girassol."}
+};
+const FATS={pal:{n:"Palmítico (16 C, saturado)",b:[],len:16,sat:true},est:{n:"Esteárico (18 C, saturado)",b:[],len:18,sat:true},ole:{n:"Oleico (18 C, monoinsaturado)",b:[9],len:18,sat:false},lin:{n:"Linoleico (18 C, poli-insaturado)",b:[9,12],len:18,sat:false}};
+const CARBS=[["Glicose","mono"],["Sacarose","di"],["Celulose","poli"],["Frutose","mono"],["Lactose","di"],["Amido","poli"],["Maltose","di"],["Glicogênio","poli"],["Galactose","mono"]];
+const CARB_FB={mono:"monossacarídio: uma única unidade, não se quebra em açúcares menores.",di:"dissacarídio: formado por duas unidades de monossacarídio.",poli:"polissacarídio: polímero com muitas unidades de glicose."};
+const LABELS=[
+ {name:"Biscoito Recheado Chocolate",por:"30 g (3 biscoitos)",lupa:["Alto em açúcar adicionado","Alto em gordura saturada"],
+  rows:[["Valor energético (kcal)","476","143","7"],["Carboidratos (g)","68","20","7"],["Açúcares totais (g)","36","11","",1],["Açúcares adicionados (g)","34","10","20",1],["Proteínas (g)","6,0","1,8","4"],["Gorduras totais (g)","20","6,0","9"],["Gorduras saturadas (g)","9,0","2,7","14",1],["Gorduras trans (g)","0","0","0",1],["Fibra alimentar (g)","2,0","0,6","2"],["Sódio (mg)","280","84","4"]]},
+ {name:"Torrada Integral Crocante",por:"30 g (4 torradas)",lupa:["Alto em sódio"],
+  rows:[["Valor energético (kcal)","391","117","6"],["Carboidratos (g)","70","21","7"],["Açúcares totais (g)","4,0","1,2","",1],["Açúcares adicionados (g)","3,0","0,9","2",1],["Proteínas (g)","12","3,6","7"],["Gorduras totais (g)","7,0","2,1","3"],["Gorduras saturadas (g)","1,5","0,5","2",1],["Gorduras trans (g)","0","0","0",1],["Fibra alimentar (g)","9,0","2,7","11"],["Sódio (mg)","650","195","10"]]}
+];
+
+const $=s=>document.querySelector(s);
+const page=$("#page"), nav=$("#nav");
+const seen=new Set();
+let cur=0;
+const NS="http://www.w3.org/2000/svg";
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+STATIONS.forEach((s,i)=>{
+  const li=document.createElement("li");
+  li.innerHTML=`<button data-i="${i}"><span class="n">${s.n}</span><span class="t">${s.t}<small>${s.s}</small></span></button>`;
+  nav.appendChild(li);
+});
+nav.addEventListener("click",e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)});
+
+function go(i,noScroll){
+  cur=Math.max(0,Math.min(STATIONS.length-1,i));
+  seen.add(cur);
+  page.innerHTML="";
+  page.appendChild(document.getElementById(STATIONS[cur].id).content.cloneNode(true));
+  const pg=document.createElement("div");pg.className="pager";
+  pg.innerHTML=(cur>0?`<button class="btn" id="prev">← ${STATIONS[cur-1].t}</button>`:"<span></span>")+
+               (cur<STATIONS.length-1?`<button class="btn primary" id="next">${STATIONS[cur+1].t} →</button>`:"");
+  page.appendChild(pg);
+  pg.querySelector("#prev")?.addEventListener("click",()=>go(cur-1));
+  pg.querySelector("#next")?.addEventListener("click",()=>go(cur+1));
+  nav.querySelectorAll("button").forEach((b,k)=>{b.setAttribute("aria-current",k===cur);b.parentElement.classList.toggle("seen",seen.has(k)&&k!==cur)});
+  nav.querySelector(`[data-i="${cur}"]`).scrollIntoView({block:"nearest",inline:"nearest"});
+  $("#progTxt").textContent=cur===0?"Início":`Estação ${STATIONS[cur].n==="✦"?"final":STATIONS[cur].n} · visitadas ${seen.size}/${STATIONS.length}`;
+  $("#progBar").style.width=(seen.size/STATIONS.length*100)+"%";
+  try{history.replaceState(null,"","#"+STATIONS[cur].id)}catch(e){}
+  if(!noScroll)window.scrollTo({top:0,behavior:"instant"in window?"instant":"auto"});
+  page.querySelectorAll(".quiz[data-q]").forEach(buildQuiz);
+  if(cur===1)initFA(); if(cur===2)initTAG(); if(cur===3)initCT(); if(cur===4)initSorter(); if(cur===5)initLabels(); if(cur===6)initCheck();
+}
+
+let qn=0;
+function buildQuiz(el){
+  const q=QUIZ[el.dataset.q]; qn++;
+  el.innerHTML=`<div class="qh">Confira · não vale nota</div><p class="qt">${q.t}</p><div class="opts"></div><div class="fb" hidden></div>`;
+  const opts=el.querySelector(".opts"), fb=el.querySelector(".fb");
+  q.o.forEach((t,k)=>{
+    const b=document.createElement("button");b.className="opt";b.textContent=String.fromCharCode(97+k)+") "+t;
+    b.addEventListener("click",()=>{
+      opts.querySelectorAll(".opt").forEach(x=>x.classList.remove("right","wrong"));
+      const ok=k===q.c; b.classList.add(ok?"right":"wrong");
+      fb.hidden=false; fb.className="fb "+(ok?"right":"wrong");
+      fb.innerHTML=`<b>${ok?"Isso mesmo.":"Ainda não."}</b> ${q.f[k]}${ok?"":" Tente outra alternativa."}`;
+    });
+    opts.appendChild(b);
+  });
+}
+
+/* ---------- desenho de cadeias ---------- */
+function chainPoints(x0,y0,len,bends,step,angle,dir){
+  // zigue-zague; em cada posição de ligação dupla cis a direção gira
+  const pts=[[x0,y0]]; let a=angle||0; let x=x0,y=y0; const h=step*0.5;
+  for(let i=1;i<=len;i++){
+    if(bends.includes(i))a+=(dir||1)*0.42;
+    const up=i%2?-1:1;
+    x+=Math.cos(a)*step;
+    y+=Math.sin(a)*step;
+    const ox=-Math.sin(a)*up*h*0.5, oy=Math.cos(a)*up*h*0.5;
+    pts.push([x+ox,y+oy]);
+  }
+  return pts;
+}
+function poly(svg,pts,stroke,w,dbl){
+  const p=document.createElementNS(NS,"polyline");
+  p.setAttribute("points",pts.map(q=>q.map(v=>v.toFixed(1)).join(",")).join(" "));
+  p.setAttribute("fill","none");p.setAttribute("stroke",stroke);p.setAttribute("stroke-width",w);p.setAttribute("stroke-linejoin","round");p.setAttribute("stroke-linecap","round");
+  svg.appendChild(p);
+  (dbl||[]).forEach(i=>{ if(pts[i]&&pts[i-1]){const [a,b]=[pts[i-1],pts[i]];const l=document.createElementNS(NS,"line");
+    const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy),nx=-dy/L*4,ny=dx/L*4;
+    l.setAttribute("x1",a[0]+nx+dx*.15);l.setAttribute("y1",a[1]+ny+dy*.15);l.setAttribute("x2",b[0]+nx-dx*.15);l.setAttribute("y2",b[1]+ny-dy*.15);
+    l.setAttribute("stroke",css("--butter"));l.setAttribute("stroke-width",w+1);l.setAttribute("stroke-linecap","round");svg.appendChild(l);}});
+}
+function txt(svg,x,y,s,fill,size,anchor,weight){const t=document.createElementNS(NS,"text");t.setAttribute("x",x);t.setAttribute("y",y);t.setAttribute("fill",fill);t.setAttribute("font-size",size||13);t.setAttribute("font-family",css("--f-mono")||"monospace");if(anchor)t.setAttribute("text-anchor",anchor);if(weight)t.setAttribute("font-weight",weight);t.textContent=s;svg.appendChild(t);return t}
+function circ(svg,x,y,r,fill){const c=document.createElementNS(NS,"circle");c.setAttribute("cx",x);c.setAttribute("cy",y);c.setAttribute("r",r);c.setAttribute("fill",fill);svg.appendChild(c)}
+
+/* Estação 1 */
+function initFA(){
+  const svg=$("#faSvg"), cap=$("#faCap");
+  const btns=page.querySelectorAll("[data-fa]");
+  function draw(k){
+    btns.forEach(b=>b.setAttribute("aria-pressed",b.dataset.fa===k));
+    svg.innerHTML="";const f=FA[k];const ink=css("--ink"),ol=css("--olive"),mu=css("--muted");
+    txt(svg,20,24,"Uma molécula",mu,12);
+    const pts=chainPoints(30,f.bends.length?115:80,17,f.bends,17,0,-1);
+    poly(svg,pts,ink,2.4,f.bends.map(b=>b));
+    const e=pts[pts.length-1]; circ(svg,e[0]+8,e[1],9,css("--bad")); txt(svg,e[0]+20,e[1]+4,"COOH",css("--bad"),12);
+    txt(svg,20,170,"Várias moléculas juntas (25 °C)",mu,12);
+    for(let r=0;r<5;r++){
+      const jitter=f.bends.length? (r%2? .35:-.25)*(f.bends.length):0;
+      const p=chainPoints(30+(f.bends.length?(r*13)%40:0),(f.bends.length?250:195)+r*(f.bends.length?20:14),17,f.bends,14,jitter*.3,-1);
+      poly(svg,p,f.bends.length?ol:ink,1.8,[]);
+    }
+    txt(svg,620,352,f.bends.length?"empacotamento desordenado → líquido":"empacotamento ordenado → sólido",f.bends.length?ol:ink,12,"end",600);
+    cap.textContent=f.cap;
+  }
+  btns.forEach(b=>b.addEventListener("click",()=>draw(b.dataset.fa)));
+  draw("est");
+}
+
+/* Estação 2 */
+function initTAG(){
+  const sels=["#r1","#r2","#r3"].map(s=>$(s)); const defs=["pal","ole","lin"];
+  sels.forEach((s,i)=>{Object.entries(FATS).forEach(([k,v])=>{const o=document.createElement("option");o.value=k;o.textContent=v.n;s.appendChild(o)});s.value=defs[i];s.addEventListener("change",draw)});
+  function draw(){
+    const svg=$("#tagSvg");svg.innerHTML="";const ink=css("--ink"),ol=css("--olive"),mu=css("--muted");
+    const ys=[70,140,210];
+    txt(svg,14,ys[0]+4,"H₂C",ink,14,null,600);txt(svg,22,ys[1]+4,"HC",ink,14,null,600);txt(svg,14,ys[2]+4,"H₂C",ink,14,null,600);
+    const l=document.createElementNS(NS,"line");l.setAttribute("x1",30);l.setAttribute("x2",30);l.setAttribute("y1",ys[0]+10);l.setAttribute("y2",ys[2]-12);l.setAttribute("stroke",ink);l.setAttribute("stroke-width",2);svg.appendChild(l);
+    let nsat=0;
+    sels.forEach((s,i)=>{const f=FATS[s.value];if(f.sat)nsat++;
+      txt(svg,52,ys[i]+4,"–O–CO–",ol,14,null,600);
+      const p=chainPoints(118,ys[i],f.len,f.b,16,0,-1);poly(svg,p,f.sat?ink:ol,2.2,f.b);
+    });
+    txt(svg,626,252,"amarelo = ligação dupla C=C",mu,11,"end");
+    const out=$("#tagOut");
+    const msg=nsat===3?"3 cadeias saturadas → forte tendência a ser <b>gordura (sólida)</b>, como o sebo bovino."
+      :nsat===2?"2 saturadas e 1 insaturada → tendência a <b>gordura</b> ou material pastoso."
+      :nsat===1?"1 saturada e 2 insaturadas → tendência a <b>óleo (líquido)</b>. O abacate, por exemplo, mistura palmítico e oleico."
+      :"3 cadeias insaturadas → <b>óleo (líquido)</b>, como os óleos de girassol e soja.";
+    out.innerHTML=`Grupos éster: 3 · Cadeias saturadas: ${nsat} de 3<br>${msg}`;
+  }
+  draw();
+  const cn=$("#cn"),hm=$("#hm");
+  function calc(){const n=+cn.value,m=+hm.value,o=$("#cOut");
+    if(!n||!m){o.textContent="Preencha n e m.";return}
+    const sat=2*n+1,d=(sat-m)/2;
+    if(d<0||!Number.isInteger(d)){o.innerHTML=`Com n = ${n}, o máximo é m = ${sat}. Esse valor de m não corresponde a um ácido graxo válido.`;return}
+    const cl=d===0?"saturado":d===1?"monoinsaturado":"poli-insaturado";
+    o.innerHTML=`Saturado teria m = 2·${n} + 1 = ${sat}<br>Faltam ${sat-m} H → ${d} ligação(ões) dupla(s) → <b>${cl}</b>`;}
+  cn.addEventListener("input",calc);hm.addEventListener("input",calc);calc();
+}
+
+/* Estação 3 */
+function initCT(){
+  const svg=$("#ctSvg"),cap=$("#ctCap"),btns=page.querySelectorAll("[data-ct]");
+  function draw(k){
+    btns.forEach(b=>b.setAttribute("aria-pressed",b.dataset.ct===k));
+    svg.innerHTML="";const ink=css("--ink"),ol=css("--olive"),mu=css("--muted"),bu=css("--butter");
+    const cx1=280,cx2=360,cy=100;
+    // ligação dupla
+    [[-5],[5]].forEach(([d])=>{const l=document.createElementNS(NS,"line");l.setAttribute("x1",cx1+12);l.setAttribute("x2",cx2-12);l.setAttribute("y1",cy+d);l.setAttribute("y2",cy+d);l.setAttribute("stroke",bu);l.setAttribute("stroke-width",4);svg.appendChild(l)});
+    txt(svg,cx1,cy+5,"C",ink,16,"middle",700);txt(svg,cx2,cy+5,"C",ink,16,"middle",700);
+    function bond(x1,y1,x2,y2,c){const l=document.createElementNS(NS,"line");l.setAttribute("x1",x1);l.setAttribute("y1",y1);l.setAttribute("x2",x2);l.setAttribute("y2",y2);l.setAttribute("stroke",c);l.setAttribute("stroke-width",2.5);l.setAttribute("stroke-linecap","round");svg.appendChild(l)}
+    // cadeia esquerda sempre para baixo-esquerda
+    const L=chainPoints(cx1-10,cy+14,6,[],22,Math.PI*0.86,1); poly(svg,L,ol,2.4,[]);
+    bond(cx1-6,cy-12,cx1-26,cy-40,mu);txt(svg,cx1-34,cy-44,"H",mu,14,"middle");
+    if(k==="cis"){
+      const R=chainPoints(cx2+10,cy+14,6,[],22,Math.PI*0.14,-1); poly(svg,R,ol,2.4,[]);
+      bond(cx2+6,cy-12,cx2+26,cy-40,mu);txt(svg,cx2+34,cy-44,"H",mu,14,"middle");
+      txt(svg,320,240,"cadeias do mesmo lado → molécula dobrada",ink,13,"middle",600);
+      cap.textContent="cis: os dois Hs ficam do mesmo lado da ligação dupla e as duas partes da cadeia também. A molécula forma um “cotovelo” e empacota mal. É a forma natural nos óleos vegetais.";
+    }else{
+      const R=chainPoints(cx2+10,cy-14,6,[],22,-Math.PI*0.14,1); poly(svg,R,ol,2.4,[]);
+      bond(cx2+6,cy+12,cx2+26,cy+40,mu);txt(svg,cx2+34,cy+56,"H",mu,14,"middle");
+      txt(svg,320,240,"cadeias em lados opostos → molécula quase reta",ink,13,"middle",600);
+      cap.textContent="trans: os Hs (e as partes da cadeia) ficam em lados opostos. A molécula fica quase linear, parecida com a saturada, e é ainda mais prejudicial à saúde cardiovascular.";
+    }
+  }
+  btns.forEach(b=>b.addEventListener("click",()=>draw(b.dataset.ct)));
+  draw("cis");
+}
+
+/* Estação 4 */
+function initSorter(){
+  const box=$("#sorter");
+  CARBS.forEach(([name,cat],i)=>{
+    const row=document.createElement("div");row.className="srow";
+    row.innerHTML=`<span><b>${name}</b></span><span class="seg">${["mono","di","poli"].map(c=>`<button class="btn" data-c="${c}" aria-pressed="false">${c}</button>`).join("")}</span><span class="r" hidden></span>`;
+    const r=row.querySelector(".r");
+    row.querySelectorAll("[data-c]").forEach(b=>b.addEventListener("click",()=>{
+      row.querySelectorAll("[data-c]").forEach(x=>x.setAttribute("aria-pressed",x===b));
+      const ok=b.dataset.c===cat; r.hidden=false; r.className="r "+(ok?"right":"wrong");
+      r.textContent=ok?`Certo. ${name} é ${CARB_FB[cat]}`:`Ainda não. Releia a p. 395 e tente de novo.`;
+    }));
+    box.appendChild(row);
+  });
+}
+
+/* Estação 5 */
+function initLabels(){
+  const box=$("#labels");
+  LABELS.forEach(L=>{
+    const d=document.createElement("div");d.className="prod";
+    d.innerHTML=`<h4>${L.name} <span style="font-weight:400;color:var(--muted)">(fictício)</span></h4>
+      <div class="lupa">${L.lupa.length?L.lupa.map(x=>`<span>🔍 ${x}</span>`).join(""):'<span class="none">sem lupa</span>'}</div>
+      <div class="tablewrap"><table class="nut"><caption>INFORMAÇÃO NUTRICIONAL</caption>
+      <thead><tr><th colspan="4" style="text-align:left;font-weight:400">Porções por embalagem: 5 · Porção: ${L.por}</th></tr>
+      <tr><th></th><th>100 g</th><th>${L.por.split(" ")[0]} ${L.por.split(" ")[1]}</th><th>%VD*</th></tr></thead>
+      <tbody>${L.rows.map(r=>`<tr class="${r[4]?"ind":""}"><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("")}
+      <tr class="tiny"><td colspan="4">*Percentual de valores diários fornecidos pela porção.</td></tr></tbody></table></div>`;
+    box.appendChild(d);
+  });
+  const ids=["#kc","#kp","#kg"].map(s=>$(s));
+  function calc(){const [c,p,g]=ids.map(i=>parseFloat(i.value)||0);const ec=c*4,ep=p*4,eg=g*9,t=ec+ep+eg;
+    const pc=v=>t?Math.round(v/t*100):0;
+    $("#kOut").innerHTML=`carboidratos: ${c} × 4 = ${ec.toFixed(0)} kcal (${pc(ec)}%)<br>proteínas: ${p} × 4 = ${ep.toFixed(0)} kcal (${pc(ep)}%)<br>gorduras: ${g} × 9 = ${eg.toFixed(0)} kcal (${pc(eg)}%)<br><b>total ≈ ${t.toFixed(0)} kcal</b>`;}
+  ids.forEach(i=>i.addEventListener("input",calc));calc();
+}
+
+/* Fechamento */
+function initCheck(){
+  const cks=page.querySelectorAll(".check input"),o=$("#ckOut");
+  const up=()=>{const n=[...cks].filter(c=>c.checked).length;o.textContent=n===cks.length?"Tudo conferido. Pode fotografar e entregar.":`${n} de ${cks.length} itens conferidos.`};
+  cks.forEach(c=>c.addEventListener("change",up));up();
+}
+
+const h=(location.hash||"").slice(1);const start=STATIONS.findIndex(s=>s.id===h);
+go(start>=0?start:0,true);
+window.addEventListener("hashchange",()=>{const k=STATIONS.findIndex(s=>s.id===location.hash.slice(1));if(k>=0&&k!==cur)go(k)});
+})();
+</script>
